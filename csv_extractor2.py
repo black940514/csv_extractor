@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from tkinter import Tk, filedialog, messagebox, Button, Label, Frame, StringVar
+from tkinter import Tk, filedialog, messagebox, Button, Label, Frame, StringVar, Scrollbar, Listbox, VERTICAL, RIGHT, LEFT, BOTH, Y
 from tkinter.ttk import Progressbar
 import threading
 
@@ -71,7 +71,7 @@ def main():
     # Create the main application window
     root = Tk()
     root.title("CSV/XLSX Batch Processor")
-    root.geometry("500x300")
+    root.geometry("600x400")
 
     # Variables
     file_paths_var = StringVar()
@@ -83,12 +83,20 @@ def main():
     file_frame = Frame(root)
     file_frame.pack(pady=10, padx=10, fill="x")
 
-    Label(file_frame, text="Selected Files:").grid(row=0, column=0, sticky="w")
-    Label(file_frame, textvariable=file_paths_var, wraplength=400, anchor="w", justify="left")\
-        .grid(row=1, column=0, sticky="w")
+    Label(file_frame, text="Selected Files:").pack(anchor="w")
+
+    # Scrollable list for file paths
+    file_list_frame = Frame(file_frame)
+    file_list_frame.pack(fill="x")
+
+    scrollbar = Scrollbar(file_list_frame, orient=VERTICAL)
+    file_listbox = Listbox(file_list_frame, yscrollcommand=scrollbar.set, height=8)
+    scrollbar.config(command=file_listbox.yview)
+    scrollbar.pack(side=RIGHT, fill=Y)
+    file_listbox.pack(side=LEFT, fill=BOTH, expand=True)
 
     Button(file_frame, text="Select Files", 
-           command=lambda: file_paths_var.set("||".join(select_files()))).grid(row=0, column=1, padx=5)
+           command=lambda: update_file_list(file_listbox, file_paths_var)).pack(pady=5)
 
     # Save folder frame
     folder_frame = Frame(root)
@@ -120,6 +128,14 @@ def main():
     Button(button_frame, text="Exit", command=root.quit).pack(side="left", padx=5)
 
     root.mainloop()
+
+def update_file_list(listbox, file_paths_var):
+    """Update the Listbox with selected file paths."""
+    file_paths = select_files()
+    file_paths_var.set("||".join(file_paths))
+    listbox.delete(0, 'end')
+    for file in file_paths:
+        listbox.insert('end', file)
 
 if __name__ == "__main__":
     main()
