@@ -71,7 +71,7 @@ def main():
     # Create the main application window
     root = Tk()
     root.title("CSV/XLSX Batch Processor")
-    root.geometry("600x400")
+    root.geometry("800x600")
 
     # Variables
     file_paths_var = StringVar()
