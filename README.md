@@ -2,9 +2,13 @@
 
 1. csv_extractor2
     - csv 예시 10행 추출
-2. schema_definition_generator
+2. schema_definition_generator3
     - 테이블 스키마 정의
     - 컬럼명
     - 데이터수
     - Null값
     - 데이터 형식
+    - 예시 데이터
+
+
+다운로드 -> dist 폴더
